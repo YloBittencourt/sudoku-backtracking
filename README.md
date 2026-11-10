@@ -1,27 +1,32 @@
 # 🧩 Sudoku Backtracking Visualizer
 
-[![CI](https://github.com/YloBittencourt/sudoku-backtracking/actions/workflows/ci.yml/badge.svg)](https://github.com/YloBittencourt/sudoku-backtracking/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Pages](https://img.shields.io/badge/Live_Demo-GitHub_Pages-2ea44f)](https://YloBittencourt.github.io/sudoku-backtracking/)
+[![C: C99](https://img.shields.io/badge/Language-C99-00599C.svg)](core/)
+[![JavaScript: ES2022](https://img.shields.io/badge/Frontend-ES_Modules-F7DF1E.svg)](web/)
 
-Visualizador interativo de **backtracking** aplicado ao Sudoku, nascido de um trabalho da disciplina de
-*Projeto e Análise de Algoritmos* (PAA). Veja o algoritmo tentar, errar e voltar atrás em tempo real.
+Visualizador interativo de **Backtracking** e **Heurística MRV** aplicados ao Sudoku, nascido de um projeto da disciplina de **Projeto e Análise de Algoritmos (PAA)**. 
 
-> 🔗 **Demo online:** `https://YloBittencourt.github.io/sudoku-backtracking/`
->
-> 📸 *Adicione aqui um GIF da resolução (ex.: gravado com [peek](https://github.com/phw/peek) ou ScreenToGif).*
+O projeto permite ver o algoritmo tomar decisões, explorar a árvore de estados, encontrar contradições e retroceder (*backtrack*) em tempo real.
+
+---
 
 ## ✨ Funcionalidades
 
-- **Animação passo a passo** do backtracking: verde (válido), vermelho (conflito), laranja (backtrack).
-- **Controles**: resolver/pausar, passo a passo, reiniciar e velocidade de 1 a ~20.000 passos/s.
-- **Métricas em tempo real**: tentativas, backtracks e profundidade da recursão.
-- **Raio-X do algoritmo**: log explicando *por que* cada número foi aceito ou rejeitado.
-- **Heurística MRV** (*Minimum Remaining Values*) opcional — compare com o backtracking ingênuo.
-- **Edite o tabuleiro**: clique numa célula e digite 1–9 (Backspace apaga).
-- **Desafio PAA**: variante do trabalho original, com palíndromos nas diagonais dos blocos 3×3.
+- **Animação Passo a Passo**: Visualização gráfica dos estados do algoritmo:
+  - 🟢 **Verde**: Dígito válido inserido.
+  - 🔴 **Vermelho**: Conflito de regra detectado (linha, coluna ou bloco 3×3).
+  - 🟠 **Laranja**: Ponto de *backtracking* (beco sem saída desfeito).
+  - 🟡 **Dourado**: Diagonais palíndromas validadas.
+- **Controles de Execução**: Play/Pause, avançar passo a passo, reiniciar e slider de velocidade (de 1 a ~20.000 passos/segundo).
+- **Métricas em Tempo Real**: Contagem de tentativas, podas/backtracks e profundidade da pilha de recursão.
+- **Raio-X do Algoritmo**: Log lateral detalhado explicando cada decisão e poda.
+- **Heurística MRV (*Minimum Remaining Values*)**: Ative ou desative para comparar o backtracking ingênuo contra a ordenação por menor domínio.
+- **Edição Interativa**: Clique em qualquer célula vazia e digite dígitos de 1 a 9 no teclado (Backspace apaga).
+- **Desafio PAA**: Modo especial que executa o algoritmo original com restrições exóticas (palíndromos nas diagonais dos blocos 3×3 e controle de pares).
 
-## 🧠 O algoritmo
+---
+
+## 🧠 Algoritmo e Comparação de Desempenho
 
 ```text
 resolver(tabuleiro):
@@ -35,64 +40,90 @@ resolver(tabuleiro):
   return FALHA
 ```
 
-**Complexidade:** no pior caso `O(9^m)`, com `m` = número de células vazias. A poda (checagem de
-linha/coluna/bloco antes de recursar) reduz muito o espaço de busca, e a heurística MRV reduz ainda mais:
+A complexidade no pior caso de força bruta é $\mathcal{O}(9^m)$, onde $m$ é o número de células vazias. A poda de viabilidade reduz o espaço de busca, e a **heurística MRV** (*fail-first*) reduz as tentativas em mais de 99%:
 
-| Puzzle | Sem MRV (tentativas) | Com MRV (tentativas) |
-| :-- | --: | --: |
-| Fácil | 37.652 | 239 |
-| Difícil | 170.978 | 824 |
+| Instância do Tabuleiro | Força Bruta / Ingênuo | Com Heurística MRV | Redução de Tentativas |
+| :--- | :---: | :---: | :---: |
+| **Fácil** | 37.652 tentativas | **239 tentativas** | **~99,4%** |
+| **Difícil** | 170.978 tentativas | **824 tentativas** | **~99,5%** |
 
-### Variante "Desafio PAA" (palíndromos)
+> 📖 **Para uma análise matemática completa** (modelagem CSP, redução NP-Completo e análise assintótica), leia o documento: [**docs/analise-algoritmica.md**](docs/analise-algoritmica.md).
 
-Port fiel do código original em C ([`core/sudoku.c`](core/sudoku.c)), em duas fases de backtracking:
+### Variante "Desafio PAA" (Palíndromos)
 
-1. A diagonal de cada bloco 3×3 recebe um **palíndromo único** (nenhum valor usado 3×, sem repetir entre blocos).
-2. O restante de cada bloco é preenchido respeitando: **no máximo um par repetido** por bloco.
+Port fiel do código original em C ([`core/sudoku.c`](core/sudoku.c)), dividido em duas fases de backtracking:
 
-## 🚀 Como rodar
+1. **Fase 1 (Diagonais)**: A diagonal principal de cada bloco 3×3 recebe um **palíndromo único** de 3 dígitos (ex: `1-2-1`), sem repetição de padrão entre os 9 blocos.
+2. **Fase 2 (Subgrades)**: O restante de cada bloco é preenchido respeitando a regra de no máximo um único par repetido fora da diagonal.
 
-**Web** (sem build, sem dependências) — a partir da raiz do repositório:
+---
 
-```bash
-cd web && python3 -m http.server 8000   # abra http://localhost:8000
-```
+## 🚀 Como Rodar Localmente
 
-> Módulos ES exigem servidor HTTP; abrir o `index.html` direto (`file://`) não funciona.
+### 1. Visualizador Web
 
-**Rodar testes automatizados:**
+Sem necessidade de build ou instalação de dependências pesadas. Basta rodar um servidor HTTP local a partir da raiz:
 
 ```bash
-node --test test/solver.test.js
+cd web
+python3 -m http.server 8080
 ```
 
-**Versão original em C (terminal):**
+Abra no navegador: 👉 **[http://localhost:8080](http://localhost:8080)**
+
+*(Nota: navegadores exigem um servidor HTTP local para carregar módulos JavaScript `type="module"` por segurança).*
+
+### 2. Testes Automatizados
+
+Suíte de testes unitários nativa (sem frameworks externos):
 
 ```bash
-cd core && make run
+npm test
+# ou: node --test test/solver.test.js
 ```
 
-## 🌐 Publicar no GitHub Pages
+### 3. Programa Original em C (Terminal)
 
-1. Suba o repositório para o GitHub (branch `main`).
-2. Em **Settings → Pages → Source**, escolha **GitHub Actions**.
-3. O workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) publica a pasta `web/` a cada push.
+Para compilar e executar o código C original via terminal:
 
-## 📁 Estrutura
+```bash
+cd core
+make run
+```
+
+---
+
+## 📁 Estrutura do Repositório
 
 ```text
-├── core/            # Código original em C (backtracking + palíndromos) e Makefile
-├── web/             # Visualizador (HTML + CSS + JS puro, ES modules)
-│   └── src/solver.js   # Algoritmos como geradores: cada yield = um passo animado
-└── .github/workflows/  # Deploy automático no GitHub Pages
+├── core/                        # Motor original em C e Makefile
+│   ├── sudoku.c                 # Algoritmo de backtracking com palíndromos
+│   └── Makefile                 # Automação de compilação (gcc)
+├── web/                         # Visualizador gráfico interativo
+│   ├── index.html               # Estrutura e layout responsivo
+│   ├── style.css                # Estilização com tema dark e efeitos visuais
+│   └── src/
+│       ├── main.js              # Controlador da interface e loop de animação
+│       └── solver.js            # Solvers escritos como Geradores (yield por passo)
+├── docs/                        # Fundamentos teóricos e análise de algoritmos
+│   └── analise-algoritmica.md   # Modelagem CSP, complexidade e heurísticas
+├── test/                        # Suíte de testes automatizados
+│   └── solver.test.js           # Validação de regras clássicas, MRV e palíndromos
+├── package.json                 # Configuração do módulo ES e script de teste
+├── LICENSE                      # Licença MIT
+└── README.md                    # Documentação do projeto
 ```
 
-## 💡 Próximos passos
+---
 
-- Voltar passo (rewind) e gráfico da árvore de recursão.
-- Compilar o C para WebAssembly (Emscripten) e usá-lo no lugar do solver JS.
-- Algoritmo X / Dancing Links para comparar.
+## 💡 Próximos Passos e Melhorias Futuras
+
+- [ ] Exportação/importação de tabuleiros customizados via URL hash.
+- [ ] Compilação do motor em C para WebAssembly (WASM) via Emscripten.
+- [ ] Implementação do **Algoritmo X de Donald Knuth** com *Dancing Links* (DLX) para benchmark comparativo.
+
+---
 
 ## 📄 Licença
 
-MIT — veja [LICENSE](LICENSE).
+Distribuído sob a licença **MIT**. Veja [`LICENSE`](LICENSE) para mais detalhes.
