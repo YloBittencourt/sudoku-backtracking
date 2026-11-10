@@ -1,13 +1,13 @@
 # 🧩 Sudoku Backtracking Visualizer
 
-[![CI](https://github.com/SEU-USUARIO/NOME-DO-REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/SEU-USUARIO/NOME-DO-REPO/actions/workflows/ci.yml)
+[![CI](https://github.com/YloBittencourt/sudoku-backtracking/actions/workflows/ci.yml/badge.svg)](https://github.com/YloBittencourt/sudoku-backtracking/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Pages](https://img.shields.io/badge/Live_Demo-GitHub_Pages-2ea44f)](https://SEU-USUARIO.github.io/NOME-DO-REPO/)
+[![GitHub Pages](https://img.shields.io/badge/Live_Demo-GitHub_Pages-2ea44f)](https://YloBittencourt.github.io/sudoku-backtracking/)
 
 Visualizador interativo de **backtracking** aplicado ao Sudoku, nascido de um trabalho da disciplina de
 *Projeto e Análise de Algoritmos* (PAA). Veja o algoritmo tentar, errar e voltar atrás em tempo real.
 
-> 🔗 **Demo online:** `https://SEU-USUARIO.github.io/NOME-DO-REPO/` *(ative o GitHub Pages — veja abaixo)*
+> 🔗 **Demo online:** `https://YloBittencourt.github.io/sudoku-backtracking/`
 >
 > 📸 *Adicione aqui um GIF da resolução (ex.: gravado com [peek](https://github.com/phw/peek) ou ScreenToGif).*
 

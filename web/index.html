@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sudoku Backtracking Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Sudoku <span>Backtracking</span> Visualizer</h1>
+    <p>Veja o algoritmo tentar, errar e voltar atrás — em tempo real.</p>
+  </header>
+
+  <main>
+    <section class="board-col">
+      <div id="board" class="board" tabindex="0" aria-label="Tabuleiro de Sudoku"></div>
+      <div class="legend">
+        <i class="dot given"></i>Fixo <i class="dot place"></i>Válido
+        <i class="dot conflict"></i>Conflito <i class="dot back"></i>Backtrack
+        <i class="dot pal"></i>Diagonal palíndromo
+      </div>
+    </section>
+
+    <aside class="panel">
+      <div class="group">
+        <label>Modo
+          <select id="mode">
+            <option value="classic">Sudoku clássico</option>
+            <option value="pal">Desafio PAA (palíndromos)</option>
+          </select>
+        </label>
+        <label id="puzzleWrap">Puzzle
+          <select id="puzzle">
+            <option value="easy">Fácil</option>
+            <option value="hard">Difícil (171 mil tentativas sem MRV)</option>
+            <option value="killer">Assassino da força bruta (milhões)</option>
+            <option value="empty">Vazio (digite os seus)</option>
+          </select>
+        </label>
+        <label id="mrvWrap"><input type="checkbox" id="mrv"> Heurística MRV (célula com menos opções primeiro)</label>
+      </div>
+
+      <div class="group controls">
+        <button id="play" class="primary">▶ Resolver</button>
+        <button id="step">Passo</button>
+        <button id="reset">Reiniciar</button>
+      </div>
+
+      <div class="group">
+        <label>Velocidade: <b id="speedLabel"></b>
+          <input type="range" id="speed" min="0" max="100" value="40">
+        </label>
+      </div>
+
+      <div class="stats">
+        <div><b id="sTries">0</b><span>tentativas</span></div>
+        <div><b id="sBack">0</b><span>backtracks</span></div>
+        <div><b id="sDepth">0</b><span>profundidade</span></div>
+      </div>
+
+      <div class="group">
+        <h3>Raio-X do algoritmo</h3>
+        <ul id="log" class="log"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <section class="explain">
+    <h2>Como funciona</h2>
+    <pre>resolver(tabuleiro):
+  célula ← próxima célula vazia
+  se não há célula: return SUCESSO
+  para v em 1..9:
+    se v é válido em célula:
+      célula ← v                 // tenta
+      se resolver(tabuleiro): return SUCESSO
+      célula ← 0                 // backtrack
+  return FALHA</pre>
+    <p><b>Backtracking</b> explora a árvore de decisões em profundidade e desfaz a última escolha ao
+    chegar a um beco sem saída. Compare o modo ingênuo com a <b>heurística MRV</b> no puzzle “difícil”:
+    o número de tentativas cai drasticamente.</p>
+    <p><b>Desafio PAA:</b> variante do trabalho original em C (<code>../core/sudoku.c</code>): a diagonal de cada bloco 3×3
+    forma um palíndromo único (fase 1) e o restante do bloco é preenchido com no máximo um par repetido (fase 2).</p>
+  </section>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

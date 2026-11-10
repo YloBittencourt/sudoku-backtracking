@@ -19,7 +19,7 @@ jobs:
       - name: Test C program execution
         run: |
           cd core
-          ./sudoku <<< "1"
+          printf "1\n" | ./sudoku
 
   test-web:
     name: Test JavaScript Solver

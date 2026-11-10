@@ -1,0 +1,54 @@
+:root {
+  --bg: #0d1117; --card: #161b22; --line: #30363d; --text: #e6edf3; --muted: #8b949e;
+  --accent: #58a6ff; --ok: #3fb950; --bad: #f85149; --back: #d29922; --gold: #f0b429;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(circle at top, #151b26, var(--bg)); color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; min-height: 100vh; }
+header { text-align: center; padding: 28px 16px 8px; }
+h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2.4rem); }
+h1 span { color: var(--accent); }
+header p { color: var(--muted); margin: 6px 0 0; }
+main { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; padding: 20px; max-width: 1050px; margin: auto; }
+.board-col { flex: 0 1 480px; }
+.board { display: grid; grid-template-columns: repeat(9, 1fr); aspect-ratio: 1; width: 100%; max-width: 480px;
+  border: 3px solid var(--accent); border-radius: 10px; overflow: hidden; background: var(--card);
+  box-shadow: 0 0 40px rgba(88, 166, 255, .15); outline: none; }
+.cell { display: flex; align-items: center; justify-content: center; font-size: clamp(1rem, 4.5vw, 1.7rem);
+  border: 1px solid var(--line); transition: background .15s, color .15s; cursor: pointer; user-select: none; }
+.cell:nth-child(9n+3), .cell:nth-child(9n+6) { border-right: 2px solid var(--accent); }
+.cell:nth-child(n+19):nth-child(-n+27), .cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--accent); }
+.cell.given { font-weight: 700; color: var(--muted); }
+.cell.place { background: rgba(63, 185, 80, .25); color: var(--ok); }
+.cell.conflict { background: rgba(248, 81, 73, .45); }
+.cell.back { background: rgba(210, 153, 34, .45); }
+.cell.pal { box-shadow: inset 0 0 0 2px var(--gold); }
+.cell.sel { outline: 2px solid var(--accent); outline-offset: -2px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; color: var(--muted); font-size: .8rem; margin-top: 12px; }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: -8px; }
+.dot.given { background: var(--muted); } .dot.place { background: var(--ok); }
+.dot.conflict { background: var(--bad); } .dot.back { background: var(--back); }
+.dot.pal { border: 2px solid var(--gold); }
+.panel { flex: 1 1 300px; max-width: 460px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 16px; }
+.group { display: flex; flex-direction: column; gap: 10px; }
+.group label { display: flex; flex-direction: column; gap: 4px; color: var(--muted); font-size: .9rem; }
+#mrvWrap { flex-direction: row; align-items: center; gap: 8px; }
+select, button { background: #21262d; color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font-size: .95rem; }
+button { cursor: pointer; } button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: #0d1117; font-weight: 700; border-color: var(--accent); }
+.controls { flex-direction: row; } .controls button { flex: 1; }
+.stats { display: flex; gap: 10px; }
+.stats div { flex: 1; background: #0d1117; border-radius: 8px; padding: 10px; text-align: center; }
+.stats b { display: block; font-size: 1.4rem; color: var(--accent); }
+.stats span { color: var(--muted); font-size: .75rem; }
+h3 { margin: 0; font-size: .95rem; }
+.log { list-style: none; margin: 0; padding: 0; font: .8rem ui-monospace, monospace; height: 170px; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; }
+.log li { color: var(--muted); } .log li:last-child { color: var(--text); }
+.log li.conflict { color: var(--bad); } .log li.back { color: var(--back); } .log li.place { color: var(--ok); }
+.explain { max-width: 760px; margin: 10px auto 50px; padding: 0 20px; color: var(--muted); line-height: 1.6; }
+.explain h2 { color: var(--text); }
+pre { background: var(--card); border: 1px solid var(--line); padding: 14px; border-radius: 8px; color: var(--text); overflow-x: auto; }
+code { color: var(--gold); }
+
