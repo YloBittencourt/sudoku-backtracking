@@ -96,4 +96,3 @@ cd core && make run
 ## 📄 Licença
 
 MIT — veja [LICENSE](LICENSE).
-
