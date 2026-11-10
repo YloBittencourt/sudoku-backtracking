@@ -1,0 +1,5 @@
+core/sudoku
+*.o
+node_modules/
+.DS_Store
+

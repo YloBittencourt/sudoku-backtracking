@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-c:
+    name: Build & Run C Core
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile C program
+        run: |
+          cd core
+          make
+      - name: Test C program execution
+        run: |
+          cd core
+          ./sudoku <<< "1"
+
+  test-web:
+    name: Test JavaScript Solver
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run unit tests
+        run: node --test test/solver.test.js
+
